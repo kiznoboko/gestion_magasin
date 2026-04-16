@@ -15,7 +15,8 @@ class CommandeController extends Controller
 
 public function create()
 {
-    return view('commandes.create');
+    $clients = Client::all();
+    return view('commandes.create', compact('clients'));
 }
 
 public function store(Request $request)
