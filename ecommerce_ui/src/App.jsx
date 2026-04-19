@@ -5,6 +5,7 @@ import AdminDashboard from './Components/AdminPage';
 import AuthPage from './Components/AuthPage';
 import UserDashboard from './Components/UserDashboard';
 import CartPage from './Components/CartPage';
+import CheckoutPage from './Components/CheckoutPage';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/AuthPage" element={<AuthPage/>} />
           <Route path="/UserDashboard" element={<UserDashboard/>} />
           <Route path="/CartPage" element={<CartPage/>} />
+          <Route path="/CheckoutPage" element={<CheckoutPage/>} />
         </Routes>
     
     </>

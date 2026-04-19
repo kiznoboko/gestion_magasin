@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import "../Styles/AuthPage.css";
 import { LogIn, UserPlus, ArrowLeft } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 const AuthPage = () => {
   const [mode, setMode] = useState("login");
+
+  const navigate = useNavigate();
+
+  const handleHome = () => {
+    navigate('/')
+  }
 
   return (
     <div className="auth-container">
@@ -11,7 +17,7 @@ const AuthPage = () => {
       {/* TOP BAR */}
       <div className="top-bar">
         <button className="back-btn">
-          <ArrowLeft size={16} /> Retour au site
+          <ArrowLeft size={16}  onClick={handleHome} /> Retour au site
         </button>
 
         <div className="toggle">
