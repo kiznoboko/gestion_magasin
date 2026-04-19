@@ -817,6 +817,28 @@ const handleCheckout = () => {
         </div>
       </main>
 
+                  <footer className="footer">
+    <div className="footer-content">
+       <div className="footer-section">
+             <h4>ElectroShop</h4>
+            <p>Votre destination high-tech préférée.</p>
+        </div>        <div className="footer-section">
+           <h4>Liens Rapides</h4>
+            <ul>
+              <li><a href="#">Produits</a></li>
+              <li><a href="#">Panier</a></li>
+            </ul>
+       </div>
+        <div className="footer-section">
+           <h4>Contact</h4>
+           <p>Email: contact@electroshop.ma</p>
+        </div>
+    </div>
+   <div className="footer-bottom">
+       <p>&copy; 2026 ElectroShop - Tous droits réservés.</p>
+    </div>
+ </footer>
+
       {/* MODAL */}
       {selectedProduct && (
                 <div className="modal-overlay" onClick={() => setSelectedProduct(null)}>

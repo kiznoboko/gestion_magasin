@@ -187,57 +187,203 @@ const CheckoutPage = () => {
     0
   );
 
-  const handleConfirmOrder = async () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+//   const handleConfirmOrder = async () => {
+//      console.log("🔥 CONFIRM CLICKED");
+//     const user = JSON.parse(localStorage.getItem("user"));
+//     const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    if (!user || cart.length === 0) {
-        alert("Cart empty or user not logged in");
-        return;
-    }
+//     console.log("user", user);
+//     console.log("cart", cart)
 
-    const total = cart.reduce(
-        (sum, item) => sum + item.prix * item.quantity,
-        0
-    );
+//     let id_client = user?.id_client;
 
+//     if (!id_client) {
+//   const clientRes = await fetch("http://127.0.0.1:8000/api/clients", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "Accept": "application/json"
+//     },
+//     body: JSON.stringify({
+//       nom: "Guest User",
+//       email: "guest" + Date.now() + "@test.com"
+//     })
+//   });
+
+//   const clientData = await clientRes.json();
+
+//   id_client = clientData.id_client || clientData.data?.id_client;
+
+//   // store it for later use
+//   localStorage.setItem("user", JSON.stringify({ id_client }));
+// }
+
+//     if (!user || cart.length === 0) {
+//         alert("Cart empty or user not logged in");
+//         return;
+//     }
+
+//     const total = cart.reduce(
+//         (sum, item) => sum + item.prix * item.quantity,
+//         0
+//     );
+
+//     try {
+//         // 1️⃣ CREATE ORDER
+//         const orderRes = await fetch("http://127.0.0.1:8000/api/commandes/", {
+//             method: "POST",
+//             headers: { "Content-Type": "application/json", "Accept": "application/json" },
+//             body: JSON.stringify({
+//                 id_client: user.id_client,
+//                 date_commande: new Date().toISOString().split("T")[0],
+//                 total,
+//                 statut: "en attente"
+//             })
+//         });
+
+//        const orderData = await orderRes.json();
+
+// if (!orderData.data) {
+//   console.error("Invalid response:", orderData);
+//   alert("Erreur création commande");
+//   return;
+// }
+
+// const id_commande = orderData.data.id_commande;
+        
+
+//         // 2️⃣ CREATE ORDER ITEMS
+//         for (const item of cart) {
+//             await fetch("http://127.0.0.1:8000/api/ligne-commandes/", {
+//                 method: "POST",
+//                 headers: {
+//   "Content-Type": "application/json",
+//   "Accept": "application/json" // ✅ THIS FIXES REDIRECT
+// },
+//                 body: JSON.stringify({
+//                     id_commande,
+//                     id_produit: item.id_produit,
+//                     quantite: item.quantity,
+//                     sous_total: item.prix * item.quantity
+//                 })
+//             });
+//         }
+
+//         alert("Commande validée !");
+//         localStorage.removeItem("cart");
+
+//     } catch (err) {
+//         console.error(err);
+//         alert("Erreur commande");
+//     }
+// };
+
+const handleConfirmOrder = async () => {
+  console.log("🔥 CONFIRM CLICKED");
+
+  let user = JSON.parse(localStorage.getItem("user"));
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  console.log("user", user);
+  console.log("cart", cart);
+
+  if (cart.length === 0) {
+    alert("Cart is empty");
+    return;
+  }
+
+  let id_client = user?.id_client;
+
+  // 1️⃣ CREATE CLIENT IF NOT EXISTS (guest checkout)
+  if (!id_client) {
     try {
-        // 1️⃣ CREATE ORDER
-        const orderRes = await fetch("http://127.0.0.1:8000/api/commandes", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                id_client: user.id_client,
-                date_commande: new Date().toISOString().split("T")[0],
-                total,
-                statut: "en attente"
-            })
-        });
+      const clientRes = await fetch("http://127.0.0.1:8000/api/clients", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify({
+          nom_client: "Guest User",
+          email: "guest" + Date.now() + "@test.com",
+          adresse: "",
+          password: "guest123"
+        }),
+      });
 
-        const orderData = await orderRes.json();
-        const id_commande = orderData.data.id_commande;
+      const clientData = await clientRes.json();
 
-        // 2️⃣ CREATE ORDER ITEMS
-        for (const item of cart) {
-            await fetch("http://127.0.0.1:8000/api/ligne-commandes", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    id_commande,
-                    id_produit: item.id_produit,
-                    quantite: item.quantity,
-                    sous_total: item.prix * item.quantity
-                })
-            });
-        }
+      console.log("clientData:", clientData);
 
-        alert("Commande validée !");
-        localStorage.removeItem("cart");
+      id_client = clientData.data.id_client;
+
+      // update localStorage user
+      user = { ...user, id_client };
+      localStorage.setItem("user", JSON.stringify(user));
 
     } catch (err) {
-        console.error(err);
-        alert("Erreur commande");
+      console.error("Client creation failed", err);
+      alert("Erreur création client");
+      return;
     }
+  }
+
+  const total = cart.reduce(
+    (sum, item) => sum + item.prix * item.quantity,
+    0
+  );
+
+  try {
+    // 2️⃣ CREATE ORDER
+    const orderRes = await fetch("http://127.0.0.1:8000/api/commandes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify({
+        id_client,
+        date_commande: new Date().toISOString().split("T")[0],
+        total,
+        statut: "en attente",
+      }),
+    });
+
+    const orderData = await orderRes.json();
+
+    console.log("orderData:", orderData);
+
+    if (!orderData.data) {
+      alert("Erreur création commande");
+      return;
+    }
+
+    const id_commande = orderData.data.id_commande;
+
+    // 3️⃣ CREATE ORDER ITEMS
+    for (const item of cart) {
+      await fetch("http://127.0.0.1:8000/api/ligne-commandes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify({
+          id_commande,
+          id_produit: item.id_produit,
+          quantite: item.quantity,
+          sous_total: item.prix * item.quantity,
+        }),
+      });
+    }
+
+    alert("Commande validée !");
+    localStorage.removeItem("cart");
+
+  } catch (err) {
+    console.error(err);
+    alert("Erreur commande");
+  }
 };
 
   return (
@@ -332,9 +478,13 @@ const CheckoutPage = () => {
 
             </section>
 
-            <button className="checkout-flow-submit-btn">
-              <CheckCircle2 size={18} onClick={handleConfirmOrder} /> Confirmer la commande
-            </button>
+            <button 
+  className="checkout-flow-submit-btn"
+  onClick={handleConfirmOrder}
+>
+  <CheckCircle2 size={18} /> 
+  Confirmer la commande
+</button>
 
           </div>
 
