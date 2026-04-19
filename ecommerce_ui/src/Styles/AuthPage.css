@@ -1,0 +1,106 @@
+.auth-container {
+  height: 100vh;
+  background: linear-gradient(135deg, #2563eb, #1e3a8a);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* TOP */
+.top-bar {
+  position: absolute;
+  top: 20px;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* TOGGLE */
+.toggle {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  padding: 5px;
+}
+
+.toggle button {
+  border: none;
+  background: none;
+  padding: 8px 16px;
+  color: white;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.toggle .active {
+  background: white;
+  color: #2563eb;
+}
+
+/* CARD */
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 350px;
+  text-align: center;
+}
+
+.icon {
+  background: #2563eb;
+  color: white;
+  width: 50px;
+  height: 50px;
+  margin: auto;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* TEXT */
+.subtitle {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* FORM */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.submit {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* SWITCH */
+.switch {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.switch span {
+  color: #2563eb;
+  cursor: pointer;
+}
