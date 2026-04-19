@@ -226,12 +226,17 @@ import { ShoppingCart, User, Star, Eye, X } from 'lucide-react'; // Added Eye an
 import '../Styles/LandingPage.css';
 
 const LandingPage = () => {
+    const [selectedCategory, setSelectedCategory] = useState("Tous");
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedProduct, setSelectedProduct] = useState(null); // State for modal
 
     const categories = ['Tous', 'Smartphones', 'Ordinateurs', 'Audio', 'Accessoires', 'Tablettes'];
     const image_url = "http://127.0.0.1:8000/storage/";
+    const filteredProducts =
+  selectedCategory === "Tous"
+    ? products
+    : products.filter((p) => p.category === selectedCategory);
 
     useEffect(() => {
         fetch('http://127.0.0.1:8000/api/produits') 
@@ -297,16 +302,20 @@ const LandingPage = () => {
                 <div className="section-header">
                     <h2>Nos Produits</h2>
                     <div className="category-list">
-                        {categories.map((cat, i) => (
-                            <button key={cat} className={`cat-pill ${i === 0 ? 'active' : ''}`}>
-                                {cat}
-                            </button>
-                        ))}
-                    </div>
+  {categories.map((cat) => (
+    <button
+      key={cat}
+      onClick={() => setSelectedCategory(cat)}
+      className={`cat-pill ${selectedCategory === cat ? "active" : ""}`}
+    >
+      {cat}
+    </button>
+  ))}
+</div>
                 </div>
 
                 <div className="product-grid">
-                    {products.map((product) => (
+                    {filteredProducts.map((product) => (
                         <div key={product.id_produit} className="product-card">
                             <div className="product-img-box">
                                 <img 
@@ -322,7 +331,9 @@ const LandingPage = () => {
                                     <Star size={14} fill="currentColor" />
                                     <span style={{color: '#9ca3af', marginLeft: '5px'}}>(4.8)</span>
                                 </div>
+                                
                                 <h3 className="product-name">{product.nom_produit}</h3>
+                                <strong className='product-category'>{product.category}</strong>
                                 <div className="product-price">{product.prix}€</div>
                                 
                                 <div className="product-footer">

@@ -354,6 +354,7 @@ const Products = () => {
               alt={p.nom_produit}
             />
             <h3>{p.nom_produit}</h3>
+            <strong>{p.category}</strong>
             <p>{p.prix}€</p>
             <p>Stock: {p.stock}</p>
             <div className="admin-product-actions">
