@@ -280,8 +280,35 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+
+  const handleEdit = (product) => {
+  setEditingProduct(product);
+  setShowModal(true);
+};
 
   const image_url = "http://127.0.0.1:8000/storage/";
+
+  const handleDelete = async (id) => {
+  if (!window.confirm("Voulez-vous supprimer ce produit ?")) return;
+
+  try {
+    const res = await fetch(
+      `http://127.0.0.1:8000/api/produits/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!res.ok) throw new Error("Delete failed");
+
+    // refresh list
+    fetchProducts();
+  } catch (err) {
+    console.error(err);
+    alert("Erreur lors de la suppression");
+  }
+};
 
   const fetchProducts = () => {
     setLoading(true);
@@ -314,7 +341,7 @@ const Products = () => {
       </div>
 
       {/* GRID */}
-      <div className="products-grid">
+      <div className="products-grid-admin">
         {products.map((p) => (
           <div className="product-card-admin" key={p.id_produit}>
             <img
@@ -329,30 +356,43 @@ const Products = () => {
             <h3>{p.nom_produit}</h3>
             <p>{p.prix}€</p>
             <p>Stock: {p.stock}</p>
+            <div className="admin-product-actions">
+                <button onClick={() => handleEdit(p)}>
+  edit
+</button>
+                <button onClick={() => handleDelete(p.id_produit)}>
+  delete
+</button>
+            </div>
           </div>
         ))}
       </div>
 
       {/* MODAL */}
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-box">
-            <CreateProduit
-              onClose={() => {
-                setShowModal(false);
-                fetchProducts(); // refresh after add
-              }}
-            />
+     {showModal && (
+  <div className="modal-overlay">
+    <div className="modal-box">
+      <CreateProduit
+        product={editingProduct}   // 🟢 THIS IS MISSING
+        onClose={() => {
+          setShowModal(false);
+          setEditingProduct(null); // 🟢 IMPORTANT RESET
+          fetchProducts();
+        }}
+      />
 
-            <button
-              className="modal-cancel"
-              onClick={() => setShowModal(false)}
-            >
-              Annuler
-            </button>
-          </div>
-        </div>
-      )}
+      <button
+        className="modal-cancel"
+        onClick={() => {
+          setShowModal(false);
+          setEditingProduct(null);
+        }}
+      >
+        Annuler
+      </button>
+    </div>
+  </div>
+)}
     </>
   );
 };

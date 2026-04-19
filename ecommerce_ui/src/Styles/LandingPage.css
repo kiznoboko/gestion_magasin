@@ -390,6 +390,16 @@
    Use .container ONLY for centering content. 
    Do NOT put background colors on it.
 */
+
+.loading-state {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 .container {
     max-width: 1200px;
     margin: 0 auto;

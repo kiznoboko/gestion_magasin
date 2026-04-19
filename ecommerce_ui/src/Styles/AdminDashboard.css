@@ -182,11 +182,19 @@ tbody tr {
     flex-direction: row;
 }
 
-.products-grid {
+/* .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 15px;
   margin-top: 20px;
+} */
+
+.product-grid-admin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
 }
 
 .product-card-admin {
@@ -196,6 +204,11 @@ tbody tr {
   border: 1px solid #eee;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   transition: 0.2s;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  gap: 40px;
 }
 
 .product-card-admin:hover {
