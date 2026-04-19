@@ -6,11 +6,14 @@ import AuthPage from './Components/AuthPage';
 import UserDashboard from './Components/UserDashboard';
 import CartPage from './Components/CartPage';
 import CheckoutPage from './Components/CheckoutPage';
+import { ModalProvider } from "./components/ModalContext";
 
 const App = () => {
   return (
     <>
+    
         <Routes>
+          
           <Route path="/"  element={<LandingPage/>}/>
           <Route path="/upload" element={<CreateProduit/>}/>
           <Route path="/AdminDashboard" element={<AdminDashboard/>} />

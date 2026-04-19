@@ -154,11 +154,17 @@
 
 import React, { useEffect, useState } from 'react';
 import { ShoppingCart, User, CheckCircle2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import '../Styles/CheckoutPage.css';
+
 
 const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [cart, setCart] = useState([]);
+  const [user, setUserData] = useState(null);
+  const navigate = useNavigate()
+  
+ 
 
   const image_url = "http://127.0.0.1:8000/storage/";
 
@@ -288,7 +294,7 @@ const handleConfirmOrder = async () => {
   console.log("cart", cart);
 
   if (cart.length === 0) {
-    alert("Cart is empty");
+    alert('Error empty cart')
     return;
   }
 
@@ -323,7 +329,7 @@ const handleConfirmOrder = async () => {
 
     } catch (err) {
       console.error("Client creation failed", err);
-      alert("Erreur création client");
+      alert('Error Error lors de creation du client')
       return;
     }
   }
@@ -354,7 +360,7 @@ const handleConfirmOrder = async () => {
     console.log("FULL ORDER RESPONSE:", orderData);
 
     if (!orderData.data) {
-      alert("Erreur création commande");
+      alert("error probleme d'effectuer la commande")
       return;
     }
 
@@ -377,14 +383,42 @@ const handleConfirmOrder = async () => {
       });
     }
 
-    alert("Commande validée !");
+    alert('success Commande validate')
     localStorage.removeItem("cart");
+
+    navigate('/UserDashboard')
 
   } catch (err) {
     console.error(err);
     alert("Erreur commande");
   }
 };
+
+useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+
+    if (!storedUser) {
+        alert("error you must login first to access user dashboard");
+        navigate("/AuthPage");
+        return;
+    }
+
+    const parsedUser = JSON.parse(storedUser);
+
+    if (parsedUser?.nom_client === "admin") {
+        navigate("/AdminDashboard");
+        return;
+    }
+
+    setUserData(parsedUser);
+
+
+}, []);
+
+
+if (!user) {
+    return <div>Loading...</div>;
+}
 
   return (
     <div className="checkout-flow-viewport">
@@ -407,10 +441,10 @@ const handleConfirmOrder = async () => {
             </div>
 
             <button className="checkout-flow-user-pill">
-              <User size={16} /> <span>User</span>
+              <User size={16} /> <span>{user.nom_client}</span>
             </button>
 
-            <button className="checkout-flow-admin-link">Admin</button>
+            
           </nav>
 
         </div>
@@ -431,30 +465,30 @@ const handleConfirmOrder = async () => {
                             <h3>Informations de livraison</h3>
                             <div className="checkout-flow-input-group">
                                <label>Nom complet</label>
-                               <input type="text" defaultValue="test" />
+                               <input type="text" defaultValue={user.nom_client} />
                            </div>
                             <div className="checkout-flow-row">
                                <div className="checkout-flow-input-group">
                                     <label>Email</label>
-                                   <input type="email" defaultValue="test@gmail.com" />
+                                   <input type="email" defaultValue={user.email} />
                                </div>
                                 <div className="checkout-flow-input-group">
                                     <label>Téléphone</label>
-                                   <input type="text" placeholder="" />
+                                   <input type="text" placeholder="Telephone" defaultValue={user.phone || ""} />
                                </div>
                             </div>
                              <div className="checkout-flow-input-group">
                                 <label>Adresse</label>
-                                <input type="text" placeholder="" />
+                                <input type="text" placeholder="" defaultValue={user.adresse || ""}/>
                            </div>
                              <div className="checkout-flow-row">
                                <div className="checkout-flow-input-group">
                                     <label>Ville</label>
-                                    <input type="text" placeholder="" />
+                                    <input type="text" placeholder=""  defaultValue={user.ville || ""}/>
                                 </div>
                                <div className="checkout-flow-input-group">
                                    <label>Code postal</label>
-                                    <input type="text" placeholder="" />
+                                    <input type="text" placeholder=""  defaultChecked={user.code_postale || ""}/>
                                 </div>
                             </div>
                        </section>

@@ -1,26 +1,104 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, User, ArrowLeft } from 'lucide-react';
 import '../Styles/UserDashboard.css';
-
+import { Navigate } from 'react-router-dom';
+import {useModal} from "./ModalContext";
 const UserDashboard = () => {
+    const [user, setUserData] = useState();
+    const [orders, setUserOrders] = useState([]);
     // Mock data based on your screenshot
-    const user = {
-        nom: "test",
-        email: "test@gmail.com"
-    };
+    const navigate = useNavigate()
+    const ShowModal = useModal()
+    const image_url = "http://127.0.0.1:8000/storage/";
+    // 
 
-    const orders = [
-        {
-            id: "ORD-004",
-            date: "2026-04-19",
-            produit: "Laptop Pro 15",
-            quantite: 1,
-            prix: "1299.00€",
-            total: "1299.00€",
-            adresse: "ikeieiei, 11000 sale",
-            statut: "En attente"
-        }
-    ];
+
+//     function fetchUserOrders(id_client) {
+//     fetch(`http://127.0.0.1:8000/api/commandes`)
+//         .then(res => res.json())
+//         .then(data => {
+//             // filter only user orders
+//             const userOrders = data.filter(
+//                 order => order.id_client === id_client
+//             );
+//             setUserOrders(userOrders);
+//         })
+//         .catch(err => console.error(err));
+// }
+
+// function fetchUserOrders(id_client) {
+//     fetch("http://127.0.0.1:8000/api/commandes/")
+//         .then(res => res.json())
+//         .then(response => {
+
+//             // 🔥 FIX: extract array safely
+//             const commandes = response.data || response;
+
+//             console.log('commands', commandes)
+
+//             if (!Array.isArray(commandes)) {
+//                 console.error("API did not return array:", commandes);
+//                 setUserOrders([]);
+//                 return;
+//             }
+
+//             const userOrders = commandes.filter(
+//                 order => order.id_client === id_client
+//             );
+
+//             setUserOrders(userOrders);
+//         })
+//         .catch(err => console.error(err));
+// }
+
+const fetchUserOrders = (id_client) => {
+  fetch("http://127.0.0.1:8000/api/commandes")
+    .then(res => res.json())
+    .then(resData => {
+      const commandes = resData.data; // ✅ extract array
+
+      const userOrders = commandes.filter(
+        order => order.id_client === id_client
+      );
+
+      setUserOrders(userOrders);
+    })
+    .catch(err => console.error(err));
+};
+
+useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+
+    if (!storedUser) {
+        ShowModal("error", "you must login first to access user dashboard");
+        navigate("/");
+        return;
+    }
+
+    const parsedUser = JSON.parse(storedUser);
+
+    if (parsedUser?.nom_client === "admin") {
+        navigate("/AdminDashboard");
+        return;
+    }
+
+    setUserData(parsedUser);
+
+    // fetch orders
+    fetchUserOrders(parsedUser.id_client);
+
+}, []);
+
+if (!user) {
+    return <div>Loading...</div>;
+}
+
+const handledisconnect = () => {
+  localStorage.removeItem('userStatus');
+  localStorage.removeItem('user');
+  navigate('/')
+}
 
     return (
         <div className="page-wrapper">
@@ -35,9 +113,12 @@ const UserDashboard = () => {
                         <a href="/">Accueil</a>
                         <ShoppingCart className="icon-link" size={20} />
                         <button className="user-pill active-user">
-                            <User size={16} /> <span>test</span>
+                            <User size={16} /> <span>{user.nom_client}</span>
                         </button>
-                        <button className="admin-btn">Admin</button>
+                        {/* <button className="admin-btn">Admin</button> */}
+                        <button className='btn-disconnect' onClick={handledisconnect}>
+                            logout
+                        </button>
                     </nav>
                 </div>
             </header>
@@ -54,7 +135,7 @@ const UserDashboard = () => {
                     <div className="profile-grid">
                         <div className="info-group">
                             <label>Nom</label>
-                            <p>{user.nom}</p>
+                            <p>{user.nom_client}</p>
                         </div>
                         <div className="info-group">
                             <label>Email</label>
@@ -76,11 +157,22 @@ const UserDashboard = () => {
                                 <span className="status-badge">{order.statut}</span>
                             </div>
                             
-                            <div className="order-details">
-                                <div className="detail-row">
-                                    <span>{order.produit}</span>
-                                    <strong>{order.prix}</strong>
-                                </div>
+                            {/* <div className="order-details">
+                                        <div className="detail-row">
+  <img
+    src={
+      order.produit?.image
+        ? `${image_url}${order.produit.image}`
+        : "https://via.placeholder.com/50"
+    }
+    className="cart-img"
+    alt={order.produit?.nom_produit || "Produit"}
+  />
+
+  <span>{order.produit?.nom_produit || "Produit inconnu"}</span>
+
+  <strong>{order.sous_total}€</strong>
+</div>
                                 <div className="detail-row sub-detail">
                                     <span>Quantité: {order.quantite}</span>
                                 </div>
@@ -91,7 +183,39 @@ const UserDashboard = () => {
                                 <div className="shipping-address">
                                     <p><strong>Adresse de livraison:</strong> {order.adresse}</p>
                                 </div>
-                            </div>
+                            </div> */}
+                            <div className="order-details">
+
+  {order.lignes?.map((line) => (
+    <div key={line.id_ligne} className="detail-row">
+
+      <img
+        src={
+          line.produit?.image
+            ? `${image_url}${line.produit.image}`
+            : "https://via.placeholder.com/50"
+        }
+        className="cart-img"
+        alt={line.produit?.nom_produit || "Produit"}
+      />
+
+      <span>
+        {line.produit?.nom_produit || "Produit inconnu"}
+      </span>
+
+      <span>x{line.quantite}</span>
+
+      <strong>{line.sous_total}€</strong>
+
+    </div>
+  ))}
+
+  <div className="order-total">
+    <span>Total</span>
+    <strong>{order.total}€</strong>
+  </div>
+
+</div>
                         </div>
                     ))}
                 </section>

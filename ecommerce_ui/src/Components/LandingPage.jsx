@@ -617,7 +617,7 @@ const removeItem = (id) => {
 
 const handleCheckout = () => {
     const user_status = localStorage.getItem('userStatus');
-    if(user_status !== 'isLoggedIn') {
+    if(!user_status === 'isLoggedIn') {
             navigate('/AuthPage')
     }
     else {
