@@ -726,6 +726,14 @@ const handleCheckout = () => {
               </div>
             </div>
 
+              <button
+      className="connect-btn"
+      onClick={() => navigate("/AuthPage")}
+    >
+      <User size={18} />
+      Connect
+    </button>
+
             <button className="admin-btn">
               <User size={16} /> Admin
             </button>

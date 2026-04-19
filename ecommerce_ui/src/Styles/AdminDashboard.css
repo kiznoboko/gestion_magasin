@@ -229,3 +229,87 @@ tbody tr {
     width: 50px;
     height: 50px;
 }
+
+/* orders */
+
+
+.title {
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* container */
+.orders-container {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+/* card */
+.order-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  transition: 0.2s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-3px);
+}
+
+/* header */
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-header h3 {
+  margin: 0;
+}
+
+/* status */
+.status {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.status.en\ attente {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status.expédiée {
+  background: #cce5ff;
+  color: #004085;
+}
+
+.status.livrée {
+  background: #d4edda;
+  color: #155724;
+}
+
+/* lines */
+.order-lines {
+  margin-top: 10px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+
+.line-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+/* total */
+.order-total {
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: right;
+}

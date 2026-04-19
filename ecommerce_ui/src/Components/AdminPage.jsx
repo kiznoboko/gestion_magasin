@@ -399,14 +399,177 @@ const Products = () => {
 };
 
 
+// const Orders = () => {
+//   const [orders, setOrders] = useState([]);
+
+//   useEffect(() => {
+//     const fetchOrders = async () => {
+//       try {
+//         const res = await fetch("http://127.0.0.1:8000/api/commandes", {
+//           headers: {
+//             Accept: "application/json",
+//           },
+//         });
+
+//         const data = await res.json();
+//         setOrders(data.data);
+//       } catch (err) {
+//         console.error(err);
+//       }
+//     };
+
+//     fetchOrders();
+//   }, []);
+
+//   return (
+//     <>
+//       <h1 className="title">Commandes</h1>
+
+//       <div className="card">
+//         {orders.map((order) => (
+//           <div key={order.id_commande} className="order-box">
+
+//             {/* ORDER HEADER */}
+//             <h3>
+//               ORD-{order.id_commande} - {order.statut}
+//             </h3>
+
+//             <p>Total: {order.total}€</p>
+//             <p>Date: {order.date_commande}</p>
+
+//             {/* LINES */}
+//             <div className="order-lines">
+//               {order.lignes.map((line) => (
+//                 <div key={line.id_ligne} className="line-item">
+//                   <span>{line.produit?.nom_produit}</span>
+//                   <span>Qty: {line.quantite}</span>
+//                   <span>{line.sous_total}€</span>
+//                 </div>
+//               ))}
+//             </div>
+
+//           </div>
+//         ))}
+//       </div>
+//     </>
+//   );
+// };
+
+// const Orders = () => {
+//   const [orders, setOrders] = useState([]);
+
+//   useEffect(() => {
+//     const fetchOrders = async () => {
+//       try {
+//         const res = await fetch("http://127.0.0.1:8000/api/commandes");
+//         const data = await res.json();
+//         setOrders(data.data || data || []);
+//       } catch (err) {
+//         console.error("Error fetching orders", err);
+//       }
+//     };
+
+//     fetchOrders();
+//   }, []);
+
+//   return (
+//     <>
+//       <h1 className="title">Commandes</h1>
+
+//       <div className="orders-container">
+//         {Array.isArray(orders) && orders.map((order) => (
+//           <div key={order.id_commande} className="order-card">
+
+//             <div className="order-header">
+//               <h3>ORD-{order.id_commande}</h3>
+//               <span className={`status ${order.statut}`}>
+//                 {order.statut}
+//               </span>
+//             </div>
+
+//             <p className="order-date">
+//               {new Date(order.date_commande).toLocaleDateString()}
+//             </p>
+
+//             {/* LIGNES */}
+//             <div className="order-lines">
+//               {order.lignes?.map((line) => (
+//                 <div key={line.id_ligne} className="line-item">
+//                   <span>{line.produit?.nom_produit}</span>
+//                   <span>x{line.quantite}</span>
+//                   <span>{line.sous_total}€</span>
+//                 </div>
+//               ))}
+//             </div>
+
+//             <div className="order-total">
+//               Total: {order.total}€
+//             </div>
+
+//           </div>
+//         ))}
+//       </div>
+//     </>
+//   );
+// };
+
 const Orders = () => {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const res = await fetch("http://127.0.0.1:8000/api/commandes");
+        const data = await res.json();
+
+        console.log("ORDERS API:", data);
+
+        setOrders(data.data || data || []);
+      } catch (err) {
+        console.error("Error fetching orders", err);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
   return (
     <>
       <h1 className="title">Commandes</h1>
-      <div className="card">
-        <p>ORD-001 - Livrée</p>
-        <p>ORD-002 - Expédiée</p>
-        <p>ORD-003 - En cours</p>
+
+      <div className="orders-container">
+        {Array.isArray(orders) && orders.map((order) => (
+          <div key={order.id_commande} className="order-card">
+
+            <div className="order-header">
+              <h3>ORD-{order.id_commande}</h3>
+              <span className={`status ${order.statut}`}>
+                {order.statut}
+              </span>
+            </div>
+
+            <p className="order-date">
+              {new Date(order.date_commande).toLocaleDateString()}
+            </p>
+
+            <div className="order-lines">
+              {order.lignes?.map((line) => (
+                <div key={line.id_ligne} className="line-item">
+                  <span>{line.produit?.nom_produit}</span>
+                  <strong>{line.produit?.category}</strong>
+                  <span>x{line.quantite}</span>
+                  <span>{line.sous_total}€</span>
+                </div>
+              ))}
+              
+            </div>
+
+            <div className="order-total">
+              Total: {order.total}€
+            </div>
+                <button>validate</button>
+          </div>
+        ))}
       </div>
     </>
   );

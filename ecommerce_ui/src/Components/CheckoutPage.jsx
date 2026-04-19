@@ -351,7 +351,7 @@ const handleConfirmOrder = async () => {
 
     const orderData = await orderRes.json();
 
-    console.log("orderData:", orderData);
+    console.log("FULL ORDER RESPONSE:", orderData);
 
     if (!orderData.data) {
       alert("Erreur création commande");
