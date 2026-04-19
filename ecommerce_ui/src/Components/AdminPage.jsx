@@ -143,6 +143,7 @@ import {useNavigate} from "react-router-dom";
 
 const AdminDashboard = () => {
   const [active, setActive] = useState("dashboard");
+  const [user, setUserData] = useState();
 
   const navigate = useNavigate();
 
@@ -155,6 +156,28 @@ const handledisconnect = () => {
   localStorage.removeItem('user');
   navigate('/')
 }
+
+ useEffect(() => {
+      const storedUser = localStorage.getItem("user");
+  
+      if (!storedUser) {
+          ShowModal("error", "you must login first to access Admin dashboard");
+          navigate("/");
+          return;
+      }
+  
+      const parsedUser = JSON.parse(storedUser);
+  
+      if (parsedUser?.nom_client !== "admin") {
+          navigate("/UserDashboard");
+          return;
+      }
+  
+      setUserData(parsedUser);
+  
+     
+  
+  }, []);
 
   return (
     <div className="dashboard-container">
@@ -289,6 +312,7 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  
 
   const handleEdit = (product) => {
   setEditingProduct(product);
@@ -332,6 +356,8 @@ const Products = () => {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+ 
 
   if (loading) return <div className="card">Chargement des produits...</div>;
 
