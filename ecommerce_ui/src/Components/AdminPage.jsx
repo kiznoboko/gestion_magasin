@@ -150,6 +150,11 @@ const AdminDashboard = () => {
     navigate('/')
 }
 
+const handledisconnect = () => {
+  localStorage.removeItem('userStatus');
+  localStorage.removeItem('user');
+  navigate('/')
+}
 
   return (
     <div className="dashboard-container">
@@ -189,6 +194,9 @@ const AdminDashboard = () => {
         <div className="bottom">
           <button className="back-btn">
             <ArrowLeft size={16}  onClick={handleHome}/> Retour au site
+          </button>
+          <button className="disconnect-btn" onClick={handledisconnect}>
+                disconnect
           </button>
         </div>
       </aside>
