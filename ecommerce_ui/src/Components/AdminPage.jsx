@@ -211,10 +211,27 @@ const handledisconnect = () => {
             >
               <ShoppingCart size={18} /> Commandes
             </button>
+            <button
+              className={`nav-item ${active === "statistiques" ? "active" : ""}`}
+              onClick={() => setActive("statistiques")}
+            >
+              <ShoppingCart size={18} /> Statistiques
+            </button>
+
+             
+              
+           
           </nav>
         </div>
 
         <div className="bottom">
+          <button
+              className={`nav-item ${active === "profile" ? "active" : ""}`}
+              onClick={() => setActive("profile")}
+            >
+              <ShoppingCart size={18} /> profile
+            </button>
+          
           <button className="back-btn">
             <ArrowLeft size={16}  onClick={handleHome}/> Retour au site
           </button>
@@ -229,6 +246,9 @@ const handledisconnect = () => {
         {active === "dashboard" && <Dashboard />}
         {active === "products" && <Products />}
         {active === "orders" && <Orders />}
+        {active === "statistiques" && <Statistiques />}
+        {active === "profile" && <Profile />}
+        
       </main>
     </div>
   );
@@ -608,5 +628,22 @@ const Orders = () => {
     </>
   );
 };
+
+const Statistiques = () => {
+  return (
+    <>
+      <p>Statistiques page</p>
+    </>
+  )
+}
+
+
+const Profile = () => {
+  return (
+    <>
+      <p>Profile page</p>
+    </>
+  )
+}
 
 export default AdminDashboard;

@@ -21,16 +21,19 @@ public function create()
 public function store(Request $request)
 {
     $validated = $request->validate([
-        'produit_id' => 'required|exists:produits,id',
-        'commande_id' => 'required|exists:commandes,id',
+        'id_commande' => 'required|exists:commandes,id_commande',
+        'id_produit' => 'required|exists:produits,id_produit',
         'quantite' => 'required|integer|min:1',
+        'sous_total' => 'required|numeric',
     ]);
 
-    LigneCommande::create($validated);
+    $ligne = LigneCommande::create($validated);
 
-    return redirect()->route('ligneCommandes.index');
+    return response()->json([
+        'message' => 'Ligne commande créée',
+        'data' => $ligne
+    ]);
 }
-
 public function show(LigneCommande $ligneCommande)
 {
     return view('ligneCommandes.show', compact('ligneCommande'));

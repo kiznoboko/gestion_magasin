@@ -17,10 +17,17 @@ class Produit extends Model
         'nom_produit',
         'prix',
         'stock',
+        'image',
+        'category'
     ];
 
     public function lignes()
     {
         return $this->hasMany(LigneCommande::class, 'id_produit', 'id_produit');
     }
+
+    public function getRouteKeyName()
+{
+    return 'id_produit';
+}
 }

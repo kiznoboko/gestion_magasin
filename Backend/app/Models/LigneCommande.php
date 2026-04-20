@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Commande;
+use App\Models\Produit;
 
 class LigneCommande extends Model
 {
     protected $table = 'ligne_commandes';
-
     protected $primaryKey = 'id_ligne';
 
     public $incrementing = true;
