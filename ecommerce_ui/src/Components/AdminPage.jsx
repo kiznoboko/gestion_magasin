@@ -104,8 +104,8 @@ const handledisconnect = () => {
               <ProfileIcon size={18} /> profile
             </button>
           
-          <button className="back-btn">
-            <ArrowLeft size={16}  onClick={handleHome}/> Retour au site
+          <button className="back-btn" onClick={handleHome}>
+            <ArrowLeft size={16}  /> Retour au site
           </button>
           <button className="disconnect-btn" onClick={handledisconnect}>
                 disconnect
@@ -125,6 +125,8 @@ const handledisconnect = () => {
     </div>
   );
 };
+
+export default AdminDashboard;
 
 /* ================= SECTIONS ================= */
 
@@ -349,21 +351,115 @@ const Orders = () => {
   );
 };
 
+// const Statistiques = () => {
+//   return (
+//     <>
+//       <p>Statistiques page</p>
+//     </>
+//   )
+// }
+
+
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+} from "chart.js";
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
 const Statistiques = () => {
+  const [chartData, setChartData] = useState({
+    labels: [],
+    datasets: []
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCommandes = async () => {
+      try {
+        const res = await fetch("http://127.0.0.1:8000/api/commandes");
+        if (!res.ok) return;
+
+        const data = await res.json();
+        const commandes = data.data || [];
+
+        // Count orders by status
+        const statusCounts = commandes.reduce((acc, commande) => {
+          const statut = commande.statut;
+          acc[statut] = (acc[statut] || 0) + 1;
+          return acc;
+        }, {});
+
+        setChartData({
+          labels: Object.keys(statusCounts),
+          datasets: [
+            {
+              label: "Number of Orders",
+              data: Object.values(statusCounts),
+              backgroundColor: ["#22c55e", "#3b82f6", "#f59e0b", "#ef4444"]
+            }
+          ]
+        });
+
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchCommandes();
+  }, []);
+
   return (
-    <>
-      <p>Statistiques page</p>
-    </>
-  )
-}
+    <div style={{ width: "80%", margin: "50px auto" }}>
+      <h2>Statistiques des commandes</h2>
+      {loading ? <p>Loading chart...</p> : <Bar data={chartData} />}
+    </div>
+  );
+};
+
+
+
+
+// const Profile = () => {
+//   return (
+//     <>
+//       <p>Profile page</p>
+//     </>
+//   )
+// }
+
 
 
 const Profile = () => {
-  return (
-    <>
-      <p>Profile page</p>
-    </>
-  )
-}
+  const [user, setUser] = useState(null);
 
-export default AdminDashboard;
+  useEffect(() => {
+    // Get user from localStorage
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // parse JSON string into object
+    }
+  }, []);
+
+  if (!user) return <p>No profile found. Please login.</p>;
+
+  return (
+    <div className="profile-wrapper">
+      <h1>My Profile</h1>
+      <p><strong>Name:</strong> {user.nom} {user.prenom}</p>
+      <p><strong>Email:</strong> {user.email}</p>
+      <p><strong>Phone:</strong> {user.telephone}</p>
+      {/* Add more fields as stored */}
+    </div>
+  );
+};
+
+
+

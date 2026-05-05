@@ -169,7 +169,7 @@ const handledisconnect = () => {
                         <div key={order.id} className="order-item">
                             <div className="order-header">
                                 <div>
-                                    <h3>Commande {order.id}</h3>
+                                    <h3>Commande {order.id_commande}</h3>
                                     <span>Passée le {order.date}</span>
                                 </div>
                                 <span className="status-badge">{order.statut}</span>
