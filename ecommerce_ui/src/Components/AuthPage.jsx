@@ -204,7 +204,13 @@ const AuthPage = () => {
 
       if (data.data) {
         localStorage.setItem("user", JSON.stringify(data.data));
-        navigate("/");
+        setForm({
+          nom: "",
+          email: "",
+          password: "",
+          password_confirmation: ""
+        })
+        setMode('login')
       } else {
         alert("Registration failed");
       }

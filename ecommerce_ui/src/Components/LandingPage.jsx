@@ -466,8 +466,9 @@
 
 
 import React, { useState, useEffect } from 'react';
-import { ShoppingCart, User, Star, Eye, X, Target } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { ShoppingCart, Star, Eye, X, Target } from 'lucide-react';
+import { User as UserIcon } from "lucide-react";
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../Styles/LandingPage.css';
 import  { Search } from "lucide-react";
 
@@ -479,9 +480,11 @@ const LandingPage = () => {
 
   const [cart, setCart] = useState([]);
   const [cartCount, setCartCount] = useState(0);
-  const [Querry, setSearchQuerry] = useState("")
-
+  const location = useLocation();
+  const [Querry, setSearchQuerry] = useState( location.state?.Querry || "" )
+  const [User, setUser] = useState(null)
   const navigate = useNavigate();
+  
 
   const categories = ['Tous', 'Smartphones', 'Ordinateurs', 'Audio', 'Accessoires', 'Tablettes'];
   const image_url = "http://127.0.0.1:8000/storage/";
@@ -630,12 +633,17 @@ const removeItem = (id) => {
 
 const handleCheckout = () => {
     const user_status = localStorage.getItem('userStatus');
-    if(!user_status === 'isLoggedIn') {
-            navigate('/AuthPage')
-    }
-    else {
-        navigate('/CheckoutPage')
-    }
+    // if(!user_status === 'isLoggedIn') {
+    //         navigate('/AuthPage')
+    // }
+    // else {
+    //     navigate('/CheckoutPage')
+    // }
+    if (user_status !== 'isLoggedIn') {
+  navigate('/AuthPage');
+} else {
+  navigate('/CheckoutPage');
+}
 }
 
 
@@ -643,6 +651,58 @@ const handleSearchProduct = () => {
     alert(`Search Querry ${Querry}`)
 }
 
+// function connecterUserInfo() {
+//   const storedUser = localStorage.getItem("user");
+//   const userStatus = localStorage.getItem("userStatus");
+
+//   if (storedUser && userStatus === "isLoggedIn") {
+//     setUser(JSON.parse(storedUser));
+//   }
+// }
+
+// function connecterUserInfo() {
+//   const storedUser = localStorage.getItem("user");
+//   const userStatus = localStorage.getItem("userStatus");
+
+//   if (storedUser && userStatus === "isLoggedIn") {
+//     try {
+//       setUser(JSON.parse(storedUser));
+//     } catch (e) {
+//       console.error("Invalid user in localStorage");
+//       setUser(null);
+//     }
+//   }
+// }
+
+function connecterUserInfo() {
+  console.log("FUNCTION CALLED");
+
+  const storedUser = localStorage.getItem("user");
+
+  const userStatusRaw = localStorage.getItem("userStatus");
+
+  const userStatus = JSON.parse(userStatusRaw);
+
+
+  console.log("storedUser:", storedUser);
+  console.log("userStatus:", userStatus);
+
+  if (storedUser && userStatus === "isLoggedIn") {
+    try {
+      const parsed = JSON.parse(storedUser);
+      console.log("PARSED USER:", parsed);
+      setUser(parsed);
+    } catch (e) {
+      console.error("Invalid user in localStorage", e);
+      setUser(null);
+    }
+  }
+}
+
+useEffect(() => {
+  console.log("USE EFFECT RUNNING");
+  connecterUserInfo();
+}, []);
 
 const handleRefresh = () => {
   window.location.reload()
@@ -754,13 +814,32 @@ const handleRefresh = () => {
               </div>
             </div>
 
-              <button
+
+                
+              {/* <button
       className="connect-btn"
       onClick={() => navigate("/AuthPage")}
     >
       <User size={18} />
       Connect
-    </button>
+    </button> */}
+
+                  {User ? (
+  <button className="connect-btn" onClick={() => navigate("/UserDashboard")}>
+    <UserIcon size={18} />
+    {User.nom_client}
+  </button>
+) : (
+  <button
+  className="connect-btn"
+  onClick={() =>
+    navigate("/AuthPage")
+  }
+>
+  <UserIcon size={18} />
+  {User?.nom_client || "Connect"}
+</button>
+)}
 
             {/* <button className="admin-btn">
               <User size={16} /> Admin

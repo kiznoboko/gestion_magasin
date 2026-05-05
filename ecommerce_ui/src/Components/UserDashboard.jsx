@@ -4,9 +4,11 @@ import { ShoppingCart, User, ArrowLeft } from 'lucide-react';
 import '../Styles/UserDashboard.css';
 import { Navigate } from 'react-router-dom';
 import {useModal} from "./ModalContext";
+import { Search } from "lucide-react"
 const UserDashboard = () => {
     const [user, setUserData] = useState();
     const [orders, setUserOrders] = useState([]);
+    const [Querry, setSearchQuerry] = useState("")
     // Mock data based on your screenshot
     const navigate = useNavigate()
     const ShowModal = useModal()
@@ -90,6 +92,18 @@ useEffect(() => {
 
 }, []);
 
+
+// const handleSearchProduct = () => {
+//     alert(`Search Querry ${Querry}`)
+// }
+
+const handleSearchProduct = () => {
+  navigate("/", {
+    state: { Querry: Querry }
+  });
+};
+
+
 if (!user) {
     return <div>Loading...</div>;
 }
@@ -109,6 +123,10 @@ const handledisconnect = () => {
                         <div className="logo-square"></div>
                         ElectroShop
                     </div>
+                <span className='ProductSearch-container'>
+                    <input type="text"  className='ProductSearch-input' placeholder='cherchez un produit' value={Querry} onChange={(e) => setSearchQuerry(e.target.value )}/>
+                    <Search size={25}  className='ProductSearch-icon' onClick={handleSearchProduct}/>
+                 </span>
                     <nav className="nav-actions">
                         <a href="/">Accueil</a>
                         <ShoppingCart className="icon-link" size={20} />
