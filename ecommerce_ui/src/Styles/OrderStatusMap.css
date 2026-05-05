@@ -1,0 +1,137 @@
+.client-check-loading {
+    min-width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.OrderStatusMap-wrapper {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    background-color: #f9fafb;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.OrderStatusMap-wrapper h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #1f2937;
+}
+
+.OrderStatusMap-wrapper p {
+    color: #6b7280;
+}
+
+
+.exports-status {
+    margin-top: 80px;
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+
+.status-wrapper {
+    width: 100%;
+    height: 4px;
+    background-color: #e5e7eb;
+    border-radius: 50px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.export-cercle-status {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #d1d5db;
+    border: 4px solid white;
+    position: relative;
+    top: -1.5px;
+    transition: all 0.3s ease;
+}
+
+
+.export-cercle-status.active {
+    background-color: #22c55e;
+    transform: scale(1.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+
+.export-cercle-status:hover {
+    transform: scale(1.15);
+}
+
+
+.exports-liveStatus-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    left: 10px;
+}
+
+
+.Live_status {
+    font-size: 14px;
+    color: #6b7280;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+
+.Live_status.active {
+    color: #22c55e;
+    font-weight: 600;
+    transform: translateY(-3px);
+}
+
+
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.search-box input {
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    width: 220px;
+    outline: none;
+}
+
+.search-box button {
+    padding: 10px 16px;
+    background: #111827;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.search-box button:hover {
+    background: #374151;
+}
+
+.not-found {
+    color: red;
+    margin-top: 20px;
+}

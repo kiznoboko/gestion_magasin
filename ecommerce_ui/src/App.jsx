@@ -8,6 +8,9 @@ import CartPage from './Components/CartPage';
 import CheckoutPage from './Components/CheckoutPage';
 import { ModalProvider } from "./components/ModalContext";
 
+import OrderStatusMap from "./Components/OrderStatusMap.jsx";
+import ClientOrderCheck from "./Components/Client_OrderCheck.jsx";
+
 const App = () => {
   return (
     <>
@@ -21,6 +24,8 @@ const App = () => {
           <Route path="/UserDashboard" element={<UserDashboard/>} />
           <Route path="/CartPage" element={<CartPage/>} />
           <Route path="/CheckoutPage" element={<CheckoutPage/>} />
+            <Route path="/Order/:id" element={<OrderStatusMap/>} />
+        <Route path="/OrderInformations" element={<ClientOrderCheck/>} />
         </Routes>
     
     </>
