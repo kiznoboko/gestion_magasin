@@ -11,7 +11,7 @@
 //                 <div className="container header-content">
 //                     <div className="logo">
 //                         <div className="logo-icon"></div>
-//                         <span>ElectroShop</span>
+//                         <span>ElectroMart</span>
 //                     </div>
 //                     <nav className="nav-links">
 //                         <a href="#">Accueil</a>
@@ -25,7 +25,7 @@
 
 //             <section className="hero">
 //                 <div className="container">
-//                     <h1>Bienvenue chez ElectroShop</h1>
+//                     <h1>Bienvenue chez ElectroMart</h1>
 //                     <p>Découvrez notre sélection de produits électroniques de qualité</p>
 //                     <div className="hero-stats">
 //                         <div className="stat-item">
@@ -134,7 +134,7 @@
 //                 <div className="container header-content">
 //                     <div className="logo">
 //                         <div className="logo-icon"></div>
-//                         <span>ElectroShop</span>
+//                         <span>ElectroMart</span>
 //                     </div>
 //                     <nav className="nav-links">
 //                         <a href="#">Accueil</a>
@@ -148,7 +148,7 @@
 
 //             <section className="hero">
 //                 <div className="container">
-//                     <h1>Bienvenue chez ElectroShop</h1>
+//                     <h1>Bienvenue chez ElectroMart</h1>
 //                     <p>Découvrez notre sélection de produits électroniques de qualité</p>
 //                     <div className="hero-stats">
 //                         <div className="stat-item">
@@ -280,7 +280,7 @@
 //                 <div className="container header-content">
 //                     <div className="logo">
 //                         <div className="logo-icon"></div>
-//                         <span>ElectroShop</span>
+//                         <span>ElectroMart</span>
 //                     </div>
 //                     <nav className="nav-links">
 //                         <a href="#">Accueil</a>
@@ -323,7 +323,7 @@
 //             {/* --- HERO --- */}
 //             <section className="hero">
 //                 <div className="hero-container">
-//                     <h1>Bienvenue chez ElectroShop</h1>
+//                     <h1>Bienvenue chez ElectroMart</h1>
 //                     <p>Découvrez notre sélection de produits électroniques de qualité</p>
 //                     <div className="hero-stats">
 //                         <div className="stat-item">
@@ -405,7 +405,7 @@
 //             <footer className="footer">
 //     <div className="footer-content">
 //         <div className="footer-section">
-//             <h4>ElectroShop</h4>
+//             <h4>ElectroMart</h4>
 //             <p>Votre destination high-tech préférée.</p>
 //         </div>
 //         <div className="footer-section">
@@ -417,11 +417,11 @@
 //         </div>
 //         <div className="footer-section">
 //             <h4>Contact</h4>
-//             <p>Email: contact@electroshop.ma</p>
+//             <p>Email: contact@ElectroMart.ma</p>
 //         </div>
 //     </div>
 //     <div className="footer-bottom">
-//         <p>&copy; 2026 ElectroShop - Tous droits réservés.</p>
+//         <p>&copy; 2026 ElectroMart - Tous droits réservés.</p>
 //     </div>
 // </footer>
 
@@ -466,9 +466,10 @@
 
 
 import React, { useState, useEffect } from 'react';
-import { ShoppingCart, User, Star, Eye, X } from 'lucide-react';
+import { ShoppingCart, User, Star, Eye, X, Target } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import '../Styles/LandingPage.css';
+import  { Search } from "lucide-react";
 
 const LandingPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("Tous");
@@ -478,6 +479,7 @@ const LandingPage = () => {
 
   const [cart, setCart] = useState([]);
   const [cartCount, setCartCount] = useState(0);
+  const [Querry, setSearchQuerry] = useState("")
 
   const navigate = useNavigate();
 
@@ -485,10 +487,21 @@ const LandingPage = () => {
   const image_url = "http://127.0.0.1:8000/storage/";
 
   // ---------------- FILTER ----------------
-  const filteredProducts =
-    selectedCategory === "Tous"
-      ? products
-      : products.filter((p) => p.category === selectedCategory);
+  // const filteredProducts =
+  //   selectedCategory === "Tous"
+  //     ? products
+  //     : products.filter((p) => p.category === selectedCategory);
+
+  const filteredProducts = products.filter((product) => {
+  const matchesCategory =
+    selectedCategory === "Tous" || product.category === selectedCategory;
+
+  const matchesQuery =
+    Querry.trim() === "" ||
+    product.nom_produit.toLowerCase().includes(Querry.toLowerCase());
+
+  return matchesCategory && matchesQuery;
+});
 
   // ---------------- FETCH PRODUCTS ----------------
   useEffect(() => {
@@ -625,6 +638,16 @@ const handleCheckout = () => {
     }
 }
 
+
+const handleSearchProduct = () => {
+    alert(`Search Querry ${Querry}`)
+}
+
+
+const handleRefresh = () => {
+  window.location.reload()
+}
+
   if (loading) return <div className="loading-state">Chargement...</div>;
 
   return (
@@ -635,9 +658,14 @@ const handleCheckout = () => {
         <div className="container header-content">
 
           <div className="logo">
-            <div className="logo-icon"></div>
-            <span>ElectroShop</span>
+            <div className="logo-icon" onClick={handleRefresh}></div>
+            <span onClick={handleRefresh}>ElectroMart</span>
           </div>
+
+          <span className='ProductSearch-container'>
+                <input type="text"  className='ProductSearch-input' placeholder='cherchez un produit' value={Querry} onChange={(e) => setSearchQuerry(e.target.value )}/>
+                <Search size={25}  className='ProductSearch-icon' onClick={handleSearchProduct}/>
+          </span>
 
           <nav className="nav-links">
             <a href="#">Accueil</a>
@@ -734,9 +762,9 @@ const handleCheckout = () => {
       Connect
     </button>
 
-            <button className="admin-btn">
+            {/* <button className="admin-btn">
               <User size={16} /> Admin
-            </button>
+            </button> */}
           </nav>
         </div>
       </header>
@@ -744,7 +772,7 @@ const handleCheckout = () => {
       {/* HERO */}
       <section className="hero">
         <div className="hero-container">
-          <h1>Bienvenue chez ElectroShop</h1>
+          <h1>Bienvenue chez ElectroMart</h1>
           <p>Découvrez notre sélection de produits électroniques de qualité</p>
         </div>
       </section>
@@ -828,7 +856,7 @@ const handleCheckout = () => {
                   <footer className="footer">
     <div className="footer-content">
        <div className="footer-section">
-             <h4>ElectroShop</h4>
+             <h4>ElectroMart</h4>
             <p>Votre destination high-tech préférée.</p>
         </div>        <div className="footer-section">
            <h4>Liens Rapides</h4>
@@ -839,11 +867,11 @@ const handleCheckout = () => {
        </div>
         <div className="footer-section">
            <h4>Contact</h4>
-           <p>Email: contact@electroshop.ma</p>
+           <p>Email: contact@ElectroMart.ma</p>
         </div>
     </div>
    <div className="footer-bottom">
-       <p>&copy; 2026 ElectroShop - Tous droits réservés.</p>
+       <p>&copy; 2026 ElectroMart - Tous droits réservés.</p>
     </div>
  </footer>
 

@@ -972,3 +972,23 @@
     font-weight: bold;
     cursor: pointer;
 }
+
+
+/* search input */
+
+.ProductSearch-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.ProductSearch-input {
+    height: 25px;
+    width: 200px;
+    padding: 0 10px;
+}
+
+.ProductSearch-icon {
+    cursor: pointer;
+}
