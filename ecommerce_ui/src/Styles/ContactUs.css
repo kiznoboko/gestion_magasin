@@ -1,0 +1,113 @@
+
+
+:root {
+  --navy: #050b2e;
+  --deep-blue: #0a1b4f;
+  --royal-blue: #123b8a;
+  --accent: #1e5bff;
+  --light-blue: #eaf0ff;
+}
+
+.btn-submit-contact {
+  border: none;
+  padding: 10px 10px;
+  margin: 5px 0;
+  color: var(--royal-blue);
+  background-color: var(--light-blue);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.contact-page {
+  width: 100%;  
+  min-height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  padding: 30px 20px;
+  font-family: Arial, sans-serif;
+  /* border: 6px solid black; */
+}
+
+.contact-container {
+  width: 100%;
+  max-width: 1100px;
+}
+
+.contact-title {
+  color: var(--royal-blue);
+  font-size: 32px;
+  font-weight: 500;
+  margin-bottom: 40px;
+}
+
+.row {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.field {
+  position: relative;
+  margin-bottom: 30px;
+  flex: 1;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 16px;
+  border: 1.5px solid var(--royal-blue);
+  outline: none;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: var(--navy);
+  background-color: transparent;
+}
+
+.field textarea {
+  resize: none;
+  padding-top: 22px;
+}
+
+.label {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--royal-blue);
+  pointer-events: none;
+}
+
+.label-textarea {
+  top: 22px;
+  transform: none;
+}
+
+.required-note {
+  color: var(--royal-blue);
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.recaptcha {
+  border: 1px solid #dcdcdc;
+  width: 300px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #555;
+}
+
+.checkbox {
+  width: 22px;
+  height: 22px;
+  border: 1px solid #999;
+}

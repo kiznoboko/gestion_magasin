@@ -311,6 +311,11 @@
 import "../Styles/OrderStatusMap.css";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+// import { Link } from "lucide-react";
+
+import { ArrowLeft } from "lucide-react";
+
+import  { Link } from "react-router-dom";
 
 const OrderStatusMap = () => {
     const { id } = useParams();
@@ -372,6 +377,9 @@ const OrderStatusMap = () => {
 
     return (
         <div className="OrderStatusMap-wrapper">
+                <Link to="/AdminDashboard">
+                    <ArrowLeft />
+                </Link>
             <h1>Order Status Map</h1>
             <p>Order ID: {id}</p>
 

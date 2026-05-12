@@ -468,9 +468,10 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Star, Eye, X, Target } from 'lucide-react';
 import { User as UserIcon } from "lucide-react";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../Styles/LandingPage.css';
 import  { Search } from "lucide-react";
+import Logo from "../assets/ElectroMart.svg";
 
 const LandingPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("Tous");
@@ -505,6 +506,8 @@ const LandingPage = () => {
 
   return matchesCategory && matchesQuery;
 });
+
+
 
   // ---------------- FETCH PRODUCTS ----------------
   useEffect(() => {
@@ -639,10 +642,12 @@ const handleCheckout = () => {
     // else {
     //     navigate('/CheckoutPage')
     // }
-    if (user_status !== 'isLoggedIn') {
+    if (!user_status === 'isLoggedIn') {
   navigate('/AuthPage');
+  console.log(`userStatus : ${user_status}`)
 } else {
   navigate('/CheckoutPage');
+  console.log('user connected')
 }
 }
 
@@ -718,8 +723,10 @@ const handleRefresh = () => {
         <div className="container header-content">
 
           <div className="logo">
-            <div className="logo-icon" onClick={handleRefresh}></div>
-            <span onClick={handleRefresh}>ElectroMart</span>
+            
+            <span onClick={handleRefresh}>
+              <img src={Logo} alt="" />
+            </span>
           </div>
 
           <span className='ProductSearch-container'>
@@ -730,7 +737,7 @@ const handleRefresh = () => {
           <nav className="nav-links">
             <a href="#">Accueil</a>
 
-            {/* CART */}
+           
             <div className="cart-wrapper">
               <ShoppingCart size={20} className="icon-btn" />
 
@@ -743,27 +750,7 @@ const handleRefresh = () => {
                   <p>Panier vide</p>
                 ) : (
                   <>
-                    {/* {cart.map((item, i) => (
-                      <div key={i} className="cart-item">
-
-                        <img
-                          src={
-                            item.image
-                              ? `${image_url}${item.image}`
-                              : "https://via.placeholder.com/50"
-                          }
-                          className="cart-img"
-                          alt={item.nom_produit}
-                        />
-
-                        <div className="cart-info">
-                          <strong>{item.nom_produit}</strong>
-                          <p>{item.prix}€</p>
-                          <small>Qty: {item.quantity}</small>
-                        </div>
-
-                      </div>
-                    ))} */}
+                  
 
                     {cart.map((item) => (
   <div key={item.id_produit} className="cart-item">
@@ -795,7 +782,7 @@ const handleRefresh = () => {
       </div>
     </div>
 
-    {/* remove button */}
+    
     <button
       className="remove-btn"
       onClick={() => removeItem(item.id_produit)}
@@ -816,13 +803,7 @@ const handleRefresh = () => {
 
 
                 
-              {/* <button
-      className="connect-btn"
-      onClick={() => navigate("/AuthPage")}
-    >
-      <User size={18} />
-      Connect
-    </button> */}
+          
 
                   {User ? (
   <button className="connect-btn" onClick={() => navigate("/UserDashboard")}>
@@ -841,11 +822,58 @@ const handleRefresh = () => {
 </button>
 )}
 
-            {/* <button className="admin-btn">
-              <User size={16} /> Admin
-            </button> */}
+            
           </nav>
         </div>
+
+        {/* <div className="container header-content">
+
+  <div className="logo" onClick={handleRefresh}>
+    <img src={Logo} alt="logo" />
+  </div>
+
+  <span className="ProductSearch-container">
+    <input
+      type="text"
+      className="ProductSearch-input"
+      placeholder="cherchez un produit"
+      value={Querry}
+      onChange={(e) => setSearchQuerry(e.target.value)}
+    />
+    <Search size={22} className="ProductSearch-icon" onClick={handleSearchProduct} />
+  </span>
+
+  <nav className="nav-links">
+
+    <a href="#">Accueil</a>
+
+    
+    <div className="cart-wrapper">
+      <ShoppingCart size={20} className="icon-btn" />
+
+      {cartCount > 0 && (
+        <span className="cart-badge">{cartCount}</span>
+      )}
+
+      <div className="cart-dropdown">
+       
+      </div>
+    </div>
+
+    {User ? (
+      <button className="connect-btn" onClick={() => navigate("/UserDashboard")}>
+        <UserIcon size={18} />
+        {User.nom_client}
+      </button>
+    ) : (
+      <button className="connect-btn" onClick={() => navigate("/AuthPage")}>
+        <UserIcon size={18} />
+        Connect
+      </button>
+    )}
+
+  </nav>
+</div> */}
       </header>
 
       {/* HERO */}
@@ -904,7 +932,18 @@ const handleRefresh = () => {
 
                 <div className="product-footer">
 
-                  <span>Stock: {product.stock}</span>
+                  {/* <span>Stock: {product.stock}</span> */}
+
+                  <span>
+  Stock:{" "}
+  {product.stock === 0 ? (
+    <strong style={{ color: "red" }}>
+      Rupture
+    </strong>
+  ) : (
+    product.stock
+  )}
+</span>
 
                   <div className="action-buttons">
 
@@ -915,12 +954,22 @@ const handleRefresh = () => {
                       <Eye size={16} />
                     </button>
 
-                    <button
+                    {/* <button
                       className="add-btn"
                       onClick={() => addToCart(product)}
                     >
                       <ShoppingCart size={16} /> Ajouter
-                    </button>
+                    </button> */}
+                    <button
+                    className="add-btn"
+  onClick={() => addToCart(product)}
+  disabled={product.stock === 0}
+>
+  {product.stock === 0 ? "Rupture" :  <>
+      <ShoppingCart size={16} />
+      Ajouter
+    </>}
+</button>
 
                   </div>
 
@@ -937,7 +986,8 @@ const handleRefresh = () => {
        <div className="footer-section">
              <h4>ElectroMart</h4>
             <p>Votre destination high-tech préférée.</p>
-        </div>        <div className="footer-section">
+        </div>        
+        <div className="footer-section">
            <h4>Liens Rapides</h4>
             <ul>
               <li><a href="#">Produits</a></li>
@@ -945,7 +995,10 @@ const handleRefresh = () => {
             </ul>
        </div>
         <div className="footer-section">
-           <h4>Contact</h4>
+          <Link to="/ContactUs">
+                <h4>Contact</h4>
+          </Link>
+           
            <p>Email: contact@ElectroMart.ma</p>
         </div>
     </div>

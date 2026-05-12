@@ -1,14 +1,15 @@
 /* LAYOUT */
 .dashboard-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   font-family: Arial, sans-serif;
   background: #f5f6f8;
 }
 
 /* SIDEBAR */
 .sidebar {
-  width: 250px;
+  min-height: 100vh;
+  min-width: 300px;
   background: linear-gradient(to bottom, #0f172a, #020617);
   color: white;
   display: flex;
@@ -73,10 +74,34 @@
   color: white;
 }
 
+
+.admin-title {
+  color: white;
+}
 /* MAIN */
 .main {
   flex: 1;
   padding: 20px;
+}
+
+.modalProductadd {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.modal-cancel {
+  width: 100%;
+  justify-content: flex-end;
+  display: flex;
+  border: none;
+  padding: 10px 5px;
+  color: black;
+  /* background-color: orange; */
+  cursor: pointer;
+  font-size: larger;
+
 }
 
 .title {
@@ -84,17 +109,82 @@
 }
 
 /* CARDS */
-.cards {
+.dashboard-cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   margin-bottom: 20px;
 }
 
-.card {
+.stat-card {
   background: white;
   padding: 20px;
   border-radius: 12px;
+  min-height: 160px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  /* font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; */
+
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+  font-size: xx-large;
+  color: white;
+  gap: 10px;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+/* hover effect */
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+/* decorative glow */
+.stat-card::before {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  top: -60px;
+  right: -60px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  filter: blur(20px);
+}
+
+/* 1️⃣ Revenue */
+.stat-card:nth-child(1) {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+}
+
+/* 2️⃣ Orders */
+.stat-card:nth-child(2) {
+  background: linear-gradient(135deg, #10b981, #047857);
+}
+
+/* 3️⃣ Products */
+.stat-card:nth-child(3) {
+  background: linear-gradient(135deg, #f59e0b, #b45309);
+}
+
+/* 4️⃣ Stock */
+.stat-card:nth-child(4) {
+  background: linear-gradient(135deg, #ef4444, #991b1b);
+}
+
+.stat-card:nth-child(5) {
+  color: black;
+}
+
+
+.profile-wrapper {
+  font-size: large;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .card p {
@@ -178,6 +268,14 @@ tbody tr {
 .status.Livrée {
   background: #dcfce7;
   color: #16a34a;
+}
+
+.disconnect-btn {
+  padding: 5px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  background-color: #E03F4F;
 }
 
 /* Admin */
@@ -335,3 +433,182 @@ tbody tr {
 .DeliveryIcon {
   cursor: pointer;
 }
+
+/* pagination */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  margin-top: 30px;
+}
+
+.pagination button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.pagination button:hover {
+  background: #1d4ed8;
+}
+
+.pagination button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-weight: bold;
+  color: #111827;
+}
+
+.adminproductactions {
+  border: none;
+  padding: 10px 10px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background-color: orange;
+  color: white; 
+}
+
+.btn-delete {
+  background-color: red;
+  color: white;
+
+}
+
+/* sellers tab */
+
+
+.sellers-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+}
+
+.sellers-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+.sellers-table thead {
+  background: #f5f7fb;
+}
+
+.sellers-table th {
+  text-align: left;
+  padding: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.sellers-table td {
+  padding: 16px;
+  border-bottom: 1px solid #f1f1f1;
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.sellers-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.sellers-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.status-badge {
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.status-badge.pending {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.status-badge.verified {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.status-badge.rejected {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.empty-row {
+  text-align: center;
+  padding: 30px;
+  color: #9ca3af;
+}
+
+/* clients */
+
+.clients-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+}
+
+.clients-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+.clients-table thead {
+  background: #f5f7fb;
+}
+
+.clients-table th {
+  text-align: left;
+  padding: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.clients-table td {
+  padding: 16px;
+  border-bottom: 1px solid #f1f1f1;
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.clients-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.clients-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+/* seller */
+

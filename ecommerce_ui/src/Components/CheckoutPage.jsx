@@ -155,6 +155,7 @@
 import React, { useEffect, useState } from 'react';
 import { ShoppingCart, User, CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useModal } from './ModalContext';
 import '../Styles/CheckoutPage.css';
 
 
@@ -162,8 +163,19 @@ const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [cart, setCart] = useState([]);
   const [user, setUserData] = useState(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   
+
+ const [formData, setFormData] = useState({
+  nom_client: "",
+  email: "",
+  phone: "",
+  adresse: "",
+  ville: "",
+  code_postale: "",
+});
+
+  const { showModal} = useModal();
  
 
   const image_url = "http://127.0.0.1:8000/storage/";
@@ -193,97 +205,6 @@ const CheckoutPage = () => {
     0
   );
 
-//   const handleConfirmOrder = async () => {
-//      console.log("🔥 CONFIRM CLICKED");
-//     const user = JSON.parse(localStorage.getItem("user"));
-//     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-//     console.log("user", user);
-//     console.log("cart", cart)
-
-//     let id_client = user?.id_client;
-
-//     if (!id_client) {
-//   const clientRes = await fetch("http://127.0.0.1:8000/api/clients", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "Accept": "application/json"
-//     },
-//     body: JSON.stringify({
-//       nom: "Guest User",
-//       email: "guest" + Date.now() + "@test.com"
-//     })
-//   });
-
-//   const clientData = await clientRes.json();
-
-//   id_client = clientData.id_client || clientData.data?.id_client;
-
-//   // store it for later use
-//   localStorage.setItem("user", JSON.stringify({ id_client }));
-// }
-
-//     if (!user || cart.length === 0) {
-//         alert("Cart empty or user not logged in");
-//         return;
-//     }
-
-//     const total = cart.reduce(
-//         (sum, item) => sum + item.prix * item.quantity,
-//         0
-//     );
-
-//     try {
-//         // 1️⃣ CREATE ORDER
-//         const orderRes = await fetch("http://127.0.0.1:8000/api/commandes/", {
-//             method: "POST",
-//             headers: { "Content-Type": "application/json", "Accept": "application/json" },
-//             body: JSON.stringify({
-//                 id_client: user.id_client,
-//                 date_commande: new Date().toISOString().split("T")[0],
-//                 total,
-//                 statut: "en attente"
-//             })
-//         });
-
-//        const orderData = await orderRes.json();
-
-// if (!orderData.data) {
-//   console.error("Invalid response:", orderData);
-//   alert("Erreur création commande");
-//   return;
-// }
-
-// const id_commande = orderData.data.id_commande;
-        
-
-//         // 2️⃣ CREATE ORDER ITEMS
-//         for (const item of cart) {
-//             await fetch("http://127.0.0.1:8000/api/ligne-commandes/", {
-//                 method: "POST",
-//                 headers: {
-//   "Content-Type": "application/json",
-//   "Accept": "application/json" // ✅ THIS FIXES REDIRECT
-// },
-//                 body: JSON.stringify({
-//                     id_commande,
-//                     id_produit: item.id_produit,
-//                     quantite: item.quantity,
-//                     sous_total: item.prix * item.quantity
-//                 })
-//             });
-//         }
-
-//         alert("Commande validée !");
-//         localStorage.removeItem("cart");
-
-//     } catch (err) {
-//         console.error(err);
-//         alert("Erreur commande");
-//     }
-// };
-
 const handleConfirmOrder = async () => {
   console.log("🔥 CONFIRM CLICKED");
 
@@ -294,11 +215,14 @@ const handleConfirmOrder = async () => {
   console.log("cart", cart);
 
   if (cart.length === 0) {
-    alert('Error empty cart')
+    // alert('Error empty cart')
+    showModal('error', 'votre cart et vide')
     return;
   }
 
   let id_client = user?.id_client;
+
+
 
   // 1️⃣ CREATE CLIENT IF NOT EXISTS (guest checkout)
   if (!id_client) {
@@ -329,10 +253,28 @@ const handleConfirmOrder = async () => {
 
     } catch (err) {
       console.error("Client creation failed", err);
-      alert('Error Error lors de creation du client')
+      // alert('Error Error lors de creation du client')
+      showModal('error', 'error lors de creation du client')
       return;
     }
   }
+
+
+   if (
+    !formData.nom_client.trim() ||
+    !formData.email.trim() ||
+    !formData.phone.trim() ||
+    !formData.adresse.trim() ||
+    !formData.ville.trim() ||
+    !formData.code_postale.trim()
+  ) {
+    showModal(
+      "error",
+      "Veuillez remplir tous les champs de livraison"
+    );
+    return;
+  }
+
 
   const total = cart.reduce(
     (sum, item) => sum + item.prix * item.quantity,
@@ -360,7 +302,8 @@ const handleConfirmOrder = async () => {
     console.log("FULL ORDER RESPONSE:", orderData);
 
     if (!orderData.data) {
-      alert("error probleme d'effectuer la commande")
+      // alert("error probleme d'effectuer la commande")
+      showModal('error', 'probleme du completion du commande')
       return;
     }
 
@@ -383,14 +326,16 @@ const handleConfirmOrder = async () => {
       });
     }
 
-    alert('success Commande validate')
+    // alert('success Commande validate')
+    showModal('success', 'success Commande validae')
     localStorage.removeItem("cart");
 
     navigate('/UserDashboard')
 
   } catch (err) {
     console.error(err);
-    alert("Erreur commande");
+    // alert("Erreur commande");
+    showModal('error', 'erreur de valider la commande')
   }
 };
 
@@ -411,6 +356,15 @@ useEffect(() => {
     }
 
     setUserData(parsedUser);
+
+    setFormData({
+  nom_client: parsedUser.nom_client || "",
+  email: parsedUser.email || "",
+  phone: parsedUser.phone || "",
+  adresse: parsedUser.adresse || "",
+  ville: parsedUser.ville || "",
+  code_postale: parsedUser.code_postale || "",
+});
 
 
 }, []);
@@ -461,7 +415,7 @@ if (!user) {
           <div className="checkout-flow-forms">
 
             {/* SHIPPING */}
-                                   <section className="checkout-flow-card">
+                                   {/* <section className="checkout-flow-card">
                             <h3>Informations de livraison</h3>
                             <div className="checkout-flow-input-group">
                                <label>Nom complet</label>
@@ -488,10 +442,87 @@ if (!user) {
                                 </div>
                                <div className="checkout-flow-input-group">
                                    <label>Code postal</label>
-                                    <input type="text" placeholder=""  defaultChecked={user.code_postale || ""}/>
+                                    <input type="text" placeholder=""  defaultValue={user.code_postale || ""}/>
                                 </div>
                             </div>
-                       </section>
+                       </section> */}
+
+                       <section className="checkout-flow-card">
+  <h3>Informations de livraison</h3>
+
+  <div className="checkout-flow-input-group">
+    <label>Nom complet</label>
+    <input
+      type="text"
+      value={formData.nom_client}
+      onChange={(e) =>
+        setFormData({ ...formData, nom_client: e.target.value })
+      }
+    />
+  </div>
+
+  <div className="checkout-flow-row">
+    <div className="checkout-flow-input-group">
+      <label>Email</label>
+      <input
+        type="email"
+        value={formData.email}
+        onChange={(e) =>
+          setFormData({ ...formData, email: e.target.value })
+        }
+      />
+    </div>
+
+    <div className="checkout-flow-input-group">
+      <label>Téléphone</label>
+      <input
+        type="text"
+        value={formData.phone}
+        onChange={(e) =>
+          setFormData({ ...formData, phone: e.target.value })
+        }
+      />
+    </div>
+  </div>
+
+  <div className="checkout-flow-input-group">
+    <label>Adresse</label>
+    <input
+      type="text"
+      value={formData.adresse}
+      onChange={(e) =>
+        setFormData({ ...formData, adresse: e.target.value })
+      }
+    />
+  </div>
+
+  <div className="checkout-flow-row">
+    <div className="checkout-flow-input-group">
+      <label>Ville</label>
+      <input
+        type="text"
+        value={formData.ville}
+        onChange={(e) =>
+          setFormData({ ...formData, ville: e.target.value })
+        }
+      />
+    </div>
+
+    <div className="checkout-flow-input-group">
+      <label>Code postal</label>
+      <input
+        type="text"
+        value={formData.code_postale}
+        onChange={(e) =>
+          setFormData({
+            ...formData,
+            code_postale: e.target.value,
+          })
+        }
+      />
+    </div>
+  </div>
+</section>
             {/* PAYMENT */}
             <section className="checkout-flow-card">
               <h3>Mode de paiement</h3>

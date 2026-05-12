@@ -687,13 +687,31 @@
     color: white;
     padding: 80px 0 30px 0;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    /* display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
     gap: 40px;
     margin-bottom: 60px;
+       display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+}
+
+.footer-section {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    /* border: 1px solid white; */
+    min-width: 150px;
+    min-height: 150px;
 }
 
 .footer-section h4 {
@@ -991,4 +1009,119 @@
 
 .ProductSearch-icon {
     cursor: pointer;
+}
+
+/* mobile  */
+
+/* ================= HEADER BASE ================= */
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 10px 20px;
+  flex-wrap: wrap;
+}
+
+/* LOGO */
+.logo img {
+  height: 40px;
+  cursor: pointer;
+}
+
+/* SEARCH */
+.ProductSearch-container {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 400px;
+  background: #f3f3f3;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.ProductSearch-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  background: transparent;
+}
+
+/* NAV */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* CART */
+.cart-wrapper {
+  position: relative;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+
+  .header-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ProductSearch-container {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .nav-links {
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    text-align: center;
+    width: 100%;
+  }
+
+  .connect-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .cart-wrapper {
+    position: relative;   /* keep only this */
+    display: inline-block; /* IMPORTANT: restore desktop behavior */
+  }
+
+    .cart-dropdown {
+    position: absolute;
+    right: 0;
+    left: 50px;
+    width: 92vw;
+    max-width: 320px;
+  }
+
+
+  footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* border: 1px solid white; */
+  }
+
+  .footer-section {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+  }
 }

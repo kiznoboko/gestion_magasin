@@ -30,4 +30,6 @@ class LigneCommande extends Model
     {
         return $this->belongsTo(Produit::class, 'id_produit', 'id_produit');
     }
+
+    
 }

@@ -1,0 +1,21 @@
+<svg width="220" height="60" viewBox="0 0 220 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  
+  <!-- Icon background -->
+  <rect x="5" y="10" width="40" height="40" rx="10" fill="#0F172A"/>
+
+  <!-- Lightning bolt -->
+  <path d="M28 14L18 32H27L24 46L34 26H25L28 14Z" fill="#38BDF8"/>
+
+  <!-- Cart wheel hint -->
+  <circle cx="18" cy="44" r="2" fill="#38BDF8"/>
+  <circle cx="32" cy="44" r="2" fill="#38BDF8"/>
+
+  <!-- Text -->
+  <text x="55" y="38" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#0F172A">
+    Electro
+  </text>
+  <text x="130" y="38" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#38BDF8">
+    Mart
+  </text>
+
+</svg>

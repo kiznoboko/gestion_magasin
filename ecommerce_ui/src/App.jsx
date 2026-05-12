@@ -7,6 +7,10 @@ import UserDashboard from './Components/UserDashboard';
 import CartPage from './Components/CartPage';
 import CheckoutPage from './Components/CheckoutPage';
 import { ModalProvider } from "./components/ModalContext";
+import ContactForm from "./Components/ContactUs.jsx";
+import RestoreAccount from './Components/RestoreAccount.jsx';
+
+
 
 import OrderStatusMap from "./Components/OrderStatusMap.jsx";
 import ClientOrderCheck from "./Components/Client_OrderCheck.jsx";
@@ -26,6 +30,8 @@ const App = () => {
           <Route path="/CheckoutPage" element={<CheckoutPage/>} />
             <Route path="/Order/:id" element={<OrderStatusMap/>} />
         <Route path="/OrderInformations" element={<ClientOrderCheck/>} />
+        <Route path="/ContactUs"  element={<ContactForm/>}/>
+        <Route path="/restore_account"  element={<RestoreAccount/>}/>
         </Routes>
     
     </>

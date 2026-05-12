@@ -1,6 +1,9 @@
 import { createContext, useContext, useState } from "react";
 import "../Styles/ModalContext.css";
 
+
+import { Loader, Check, CircleX } from "lucide-react";
+
 const ModalContext = createContext();
 
 export const useModal = () => useContext(ModalContext);
@@ -28,9 +31,9 @@ export const ModalProvider = ({ children }) => {
             className={`modal-box ${modal.type}`}
             onClick={(e) => e.stopPropagation()}
           >
-            {modal.type === "loading" && <div className="spinner">⏳</div>}
-            {modal.type === "success" && <div>✅</div>}
-            {modal.type === "error" && <div>❌</div>}
+            {modal.type === "loading" && <div className="spinner"><Loader size={30} /></div>}
+            {modal.type === "success" && <div><Check size={30} /></div>}
+            {modal.type === "error" && <div> <CircleX size={30} />  </div>}
 
             <p>{modal.message}</p>
           </div>

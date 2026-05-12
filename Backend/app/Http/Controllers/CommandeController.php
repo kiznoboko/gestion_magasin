@@ -104,9 +104,16 @@ public function store(Request $request)
 //         'data' => $ligne
 //     ]);
 // }
+// public function show(Commande $commande)
+// {
+//     return view('commandes.show', compact('commande'));
+// }
+
 public function show(Commande $commande)
 {
-    return view('commandes.show', compact('commande'));
+    return response()->json([
+        'data' => $commande->load(['client', 'lignes.produit'])
+    ]);
 }
 
 public function edit(Commande $commande)
@@ -125,7 +132,10 @@ public function update(Request $request, Commande $commande)
 
     $commande->update($validated);
 
-    return redirect()->route('commandes.index');
+    return response()->json([
+        'message' => 'Commande mise à jour',
+        'data' => $commande
+    ]);
 }
 
 public function destroy(Commande $commande)

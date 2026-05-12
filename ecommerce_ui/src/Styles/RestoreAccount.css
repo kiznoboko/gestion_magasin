@@ -1,0 +1,83 @@
+/* Page container */
+.restore-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f7fb;
+  font-family: Arial, sans-serif;
+}
+
+/* Card box */
+.restore-box {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+/* Title */
+.restore-box h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  color: #333;
+}
+
+/* Input */
+.restore-box input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.restore-box input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 5px rgba(74,144,226,0.3);
+}
+
+/* Button */
+.restore-box button {
+  width: 100%;
+  padding: 12px;
+  background: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.restore-box button:hover {
+  background: #357abd;
+}
+
+/* Disabled button */
+.restore-box button:disabled {
+  background: #a0c4ff;
+  cursor: not-allowed;
+}
+
+/* Message */
+.restore-message {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #444;
+}
+
+/* Success message */
+.restore-message.success {
+  color: green;
+}
+
+/* Error message */
+.restore-message.error {
+  color: red;
+}
